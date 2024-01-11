@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../styles/Home.css'
 import userimage from '../Assets/userimage.svg'
 import bellicon from '../Assets/bellicon.svg'
@@ -9,8 +9,19 @@ import ApexCharts from 'apexcharts'
 import ApexChartChild from './ApexChartChild';
 import DonutChart from './DonutChart';
 import sideLogo from '../Assets/sideLogo.png'
+import { HamburgerIcon } from '@chakra-ui/icons'
+import {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+} from '@chakra-ui/react'
 import { Box,Image,Select,Button, border, } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
+import { useMediaQuery,useDisclosure } from '@chakra-ui/react'
 import {
     Menu,
     MenuButton,
@@ -22,257 +33,426 @@ import {
     MenuDivider,
   } from '@chakra-ui/react'
 const Home = () => {
+  const [isSmallerThan1340] = useMediaQuery('(max-width: 1340px)');
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const data = [
+    {
+      Date: '4/1/22',
+      Month: 'Jan',
+      Year: 2022,
+      Supplier: 'Reliance',
+      Emissions: 1698,
+      Revenue: 203456,
+      R_E: 120,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '3/1/23',
+      Month: 'Jan',
+      Year: 2023,
+      Supplier: 'Reliance',
+      Emissions: 1790,
+      Revenue: 245678,
+      R_E: 137,
+      YOYRECHANGE: '15%',
+    },
+    {
+      Date: '2/2/22',
+      Month: 'Feb',
+      Year: 2022,
+      Supplier: 'Reliance',
+      Emissions: 2108,
+      Revenue: 203456,
+      R_E: 96.5,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '5/2/23',
+      Month: 'Feb',
+      Year: 2023,
+      Supplier: 'Adani',
+      Emissions: 2205,
+      Revenue: 220000,
+      R_E: 99.8,
+      YOYRECHANGE: '3%',
+    },
+    {
+      Date: '6/3/22',
+      Month: 'Mar',
+      Year: 2022,
+      Supplier: 'Reliance',
+      Emissions: 2251,
+      Revenue: 245647,
+      R_E: 109.1,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '7/3/23',
+      Month: 'Mar',
+      Year: 2023,
+      Supplier: 'Adani',
+      Emissions: 2345,
+      Revenue: 287545,
+      R_E: 122.6,
+      YOYRECHANGE: '12%',
+    },
+    {
+      Date: '2/4/22',
+      Month: 'Apr',
+      Year: 2022,
+      Supplier: 'Shaurya Drugs',
+      Emissions: 1602,
+      Revenue: 179853,
+      R_E: 112.3,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '2/4/23',
+      Month: 'Apr',
+      Year: 2023,
+      Supplier: 'Adani',
+      Emissions: 1503,
+      Revenue: 195395,
+      R_E: 130.0,
+      YOYRECHANGE: '16%',
+    },
+    {
+      Date: '3/5/22',
+      Month: 'May',
+      Year: 2022,
+      Supplier: 'Orlife Healthcare',
+      Emissions: 3456,
+      Revenue: 464464,
+      R_E: 134.4,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '4/5/23',
+      Month: 'May',
+      Year: 2023,
+      Supplier: 'Adani',
+      Emissions: 4634,
+      Revenue: 575747,
+      R_E: 124.2,
+      YOYRECHANGE: '-8%',
+    },
+    {
+      Date: '3/6/22',
+      Month: 'June',
+      Year: 2022,
+      Supplier: 'Orlife Healthcare',
+      Emissions: 3245,
+      Revenue: 464464,
+      R_E: 143.1,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '4/6/23',
+      Month: 'June',
+      Year: 2023,
+      Supplier: 'Adani',
+      Emissions: 4634,
+      Revenue: 575747,
+      R_E: 124.2,
+      YOYRECHANGE: '-13%',
+    },
+    {
+      Date: '3/7/22',
+      Month: 'July',
+      Year: 2022,
+      Supplier: 'Rezicure Pharmaceuticals',
+      Emissions: 3543,
+      Revenue: 464464,
+      R_E: 131.1,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '5/7/23',
+      Month: 'July',
+      Year: 2023,
+      Supplier: 'Reliance',
+      Emissions: 3487,
+      Revenue: 575747,
+      R_E: 165.1,
+      YOYRECHANGE: '26%',
+    },
+    {
+      Date: '3/8/22',
+      Month: 'Aug',
+      Year: 2022,
+      Supplier: 'Rezicure Pharmaceuticals',
+      Emissions: 5445,
+      Revenue: 643864,
+      R_E: 118.2,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '5/8/23',
+      Month: 'Aug',
+      Year: 2023,
+      Supplier: 'Merion Care',
+      Emissions: 5258,
+      Revenue: 689747,
+      R_E: 131.2,
+      YOYRECHANGE: '11%',
+    },
+    {
+      Date: '2/9/22',
+      Month: 'Sep',
+      Year: 2022,
+      Supplier: 'Ruzette Organics',
+      Emissions: 4343,
+      Revenue: 564651,
+      R_E: 130.0,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '3/9/23',
+      Month: 'Sep',
+      Year: 2023,
+      Supplier: 'Ruzette Organics',
+      Emissions: 4524,
+      Revenue: 578965,
+      R_E: 128.0,
+      YOYRECHANGE: '-2%',
+    },
+    {
+      Date: '6/10/22',
+      Month: 'Oct',
+      Year: 2022,
+      Supplier: 'Steller Bio Labs',
+      Emissions: 3434,
+      Revenue: 516513,
+      R_E: 150.4,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '6/10/23',
+      Month: 'Oct',
+      Year: 2023,
+      Supplier: 'Steller Bio Labs',
+      Emissions: 3332,
+      Revenue: 524535,
+      R_E: 157.4,
+      YOYRECHANGE: '5%',
+    },
+    {
+      Date: '10/11/22',
+      Month: 'Nov',
+      Year: 2022,
+      Supplier: 'Eskos Pharma',
+      Emissions: 3464,
+      Revenue: 546561,
+      R_E: 157.8,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '10/11/23',
+      Month: 'Nov',
+      Year: 2023,
+      Supplier: 'Eskos Pharma',
+      Emissions: 3535,
+      Revenue: 576855,
+      R_E: 163.2,
+      YOYRECHANGE: '3%',
+    },
+    {
+      Date: '1/12/22',
+      Month: 'Dec',
+      Year: 2022,
+      Supplier: 'Adani',
+      Emissions: 2324,
+      Revenue: 343535,
+      R_E: 147.8,
+      YOYRECHANGE: null,
+    },
+    {
+      Date: '2/12/23',
+      Month: 'Dec',
+      Year: 2023,
+      Supplier: 'Reliance',
+      Emissions: 2452,
+      Revenue: 354646,
+      R_E: 144.6,
+      YOYRECHANGE: '-2%',
+    },
+  ];
+  const [info,setInfo]=useState(data||[]);
+  const btnRef = React.useRef()
+   const[state,setState]=useState(true);
+   const [showLegend, setShowLegend] = useState(true);
+function sorter(){
+  if(state){
+    const sortedData = data.slice().sort((a, b) => a.Emissions - b.Emissions);
+  
+    console.log(sortedData);
+      setInfo(sortedData);
+      setState(false);
+  }else{
+    const sortedData = data.slice().sort((a, b) => b.Emissions - a.Emissions);
+  
+    console.log(sortedData);
+      setInfo(sortedData);
+    setState(true);
+  }
+  
+  
+  
+}
 
-   
-    const data = [
-        {
-          Date: '4/1/22',
-          Month: 'Jan',
-          Year: 2022,
-          Supplier: 'Reliance',
-          Emissions: 1698,
-          Revenue: 203456,
-          R_E: 120,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '3/1/23',
-          Month: 'Jan',
-          Year: 2023,
-          Supplier: 'Reliance',
-          Emissions: 1790,
-          Revenue: 245678,
-          R_E: 137,
-          YOYRECHANGE: '15%',
-        },
-        {
-          Date: '2/2/22',
-          Month: 'Feb',
-          Year: 2022,
-          Supplier: 'Reliance',
-          Emissions: 2108,
-          Revenue: 203456,
-          R_E: 96.5,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '5/2/23',
-          Month: 'Feb',
-          Year: 2023,
-          Supplier: 'Adani',
-          Emissions: 2205,
-          Revenue: 220000,
-          R_E: 99.8,
-          YOYRECHANGE: '3%',
-        },
-        {
-          Date: '6/3/22',
-          Month: 'Mar',
-          Year: 2022,
-          Supplier: 'Reliance',
-          Emissions: 2251,
-          Revenue: 245647,
-          R_E: 109.1,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '7/3/23',
-          Month: 'Mar',
-          Year: 2023,
-          Supplier: 'Adani',
-          Emissions: 2345,
-          Revenue: 287545,
-          R_E: 122.6,
-          YOYRECHANGE: '12%',
-        },
-        {
-          Date: '2/4/22',
-          Month: 'Apr',
-          Year: 2022,
-          Supplier: 'Shaurya Drugs',
-          Emissions: 1602,
-          Revenue: 179853,
-          R_E: 112.3,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '2/4/23',
-          Month: 'Apr',
-          Year: 2023,
-          Supplier: 'Adani',
-          Emissions: 1503,
-          Revenue: 195395,
-          R_E: 130.0,
-          YOYRECHANGE: '16%',
-        },
-        {
-          Date: '3/5/22',
-          Month: 'May',
-          Year: 2022,
-          Supplier: 'Orlife Healthcare',
-          Emissions: 3456,
-          Revenue: 464464,
-          R_E: 134.4,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '4/5/23',
-          Month: 'May',
-          Year: 2023,
-          Supplier: 'Adani',
-          Emissions: 4634,
-          Revenue: 575747,
-          R_E: 124.2,
-          YOYRECHANGE: '-8%',
-        },
-        {
-          Date: '3/6/22',
-          Month: 'June',
-          Year: 2022,
-          Supplier: 'Orlife Healthcare',
-          Emissions: 3245,
-          Revenue: 464464,
-          R_E: 143.1,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '4/6/23',
-          Month: 'June',
-          Year: 2023,
-          Supplier: 'Adani',
-          Emissions: 4634,
-          Revenue: 575747,
-          R_E: 124.2,
-          YOYRECHANGE: '-13%',
-        },
-        {
-          Date: '3/7/22',
-          Month: 'July',
-          Year: 2022,
-          Supplier: 'Rezicure Pharmaceuticals',
-          Emissions: 3543,
-          Revenue: 464464,
-          R_E: 131.1,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '5/7/23',
-          Month: 'July',
-          Year: 2023,
-          Supplier: 'Reliance',
-          Emissions: 3487,
-          Revenue: 575747,
-          R_E: 165.1,
-          YOYRECHANGE: '26%',
-        },
-        {
-          Date: '3/8/22',
-          Month: 'Aug',
-          Year: 2022,
-          Supplier: 'Rezicure Pharmaceuticals',
-          Emissions: 5445,
-          Revenue: 643864,
-          R_E: 118.2,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '5/8/23',
-          Month: 'Aug',
-          Year: 2023,
-          Supplier: 'Merion Care',
-          Emissions: 5258,
-          Revenue: 689747,
-          R_E: 131.2,
-          YOYRECHANGE: '11%',
-        },
-        {
-          Date: '2/9/22',
-          Month: 'Sep',
-          Year: 2022,
-          Supplier: 'Ruzette Organics',
-          Emissions: 4343,
-          Revenue: 564651,
-          R_E: 130.0,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '3/9/23',
-          Month: 'Sep',
-          Year: 2023,
-          Supplier: 'Ruzette Organics',
-          Emissions: 4524,
-          Revenue: 578965,
-          R_E: 128.0,
-          YOYRECHANGE: '-2%',
-        },
-        {
-          Date: '6/10/22',
-          Month: 'Oct',
-          Year: 2022,
-          Supplier: 'Steller Bio Labs',
-          Emissions: 3434,
-          Revenue: 516513,
-          R_E: 150.4,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '6/10/23',
-          Month: 'Oct',
-          Year: 2023,
-          Supplier: 'Steller Bio Labs',
-          Emissions: 3332,
-          Revenue: 524535,
-          R_E: 157.4,
-          YOYRECHANGE: '5%',
-        },
-        {
-          Date: '10/11/22',
-          Month: 'Nov',
-          Year: 2022,
-          Supplier: 'Eskos Pharma',
-          Emissions: 3464,
-          Revenue: 546561,
-          R_E: 157.8,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '10/11/23',
-          Month: 'Nov',
-          Year: 2023,
-          Supplier: 'Eskos Pharma',
-          Emissions: 3535,
-          Revenue: 576855,
-          R_E: 163.2,
-          YOYRECHANGE: '3%',
-        },
-        {
-          Date: '1/12/22',
-          Month: 'Dec',
-          Year: 2022,
-          Supplier: 'Adani',
-          Emissions: 2324,
-          Revenue: 343535,
-          R_E: 147.8,
-          YOYRECHANGE: null,
-        },
-        {
-          Date: '2/12/23',
-          Month: 'Dec',
-          Year: 2023,
-          Supplier: 'Reliance',
-          Emissions: 2452,
-          Revenue: 354646,
-          R_E: 144.6,
-          YOYRECHANGE: '-2%',
-        },
-      ];
-
+function legend(){
+  if(showLegend){
+    setShowLegend(false);
+  }else{
+    setShowLegend(true);
+  }
+}
 
 
   return (
     <div className='home-div'>
       
-     <Box width={'20%'} height={'1306px'} backgroundColor={'#181818'}>
+     {
+      isSmallerThan1340?(
+        <>
+        <Box width={'8%'} height={'1306px'} backgroundColor={'#181818'}>
+       <Box width={'min-content'} margin={'auto'}>
+       <Button ref={btnRef}  onClick={onOpen} margin={'auto'} backgroundColor={'transparent'}>
+      < HamburgerIcon  height={'1rem'} backgroundColor={'transparent'} color={'white'}/>
+      </Button>
+       </Box>
+      <Drawer
+        isOpen={isOpen}
+        placement='left'
+        onClose={onClose}
+        finalFocusRef={btnRef}
+        
+      >
+        <DrawerOverlay />
+        
+        <DrawerContent  backgroundColor={'#181818'} maxW={'20rem'}>
+        <DrawerCloseButton color={'white'} backgroundColor={'transparent'} width={'min-content'} height={'2rem'} marginLeft={'auto'}/>
+         
+
+          <DrawerBody >
+          <Box padding={'13px 10px 13px 30px'} >
+            <Image src={sideLogo}/>
+       </Box>
+       <Box padding={'10px 0 10px 0'} >
+        <Box padding={'13px 10px 13px 20px'} width={'max-content'} color={'#5C5C5C'} fontFamily={'Inter'} fontWeight={'500'} fontSize={'14px'} textAlign={'left'}>DATA-IN</Box>
+        <Box padding={'13px 10px 13px 20px'} display={'flex'}><Box marginTop={'5px'} marginLeft={'10px'} marginRight={'5px'}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <g clip-path="url(#clip0_34_317)">
+            <path d="M8.14581 12.0417C9.03123 12.0417 9.78395 11.7317 10.404 11.1116C11.024 10.4916 11.3338 9.73912 11.3333 8.85418V5.66668H8.14581C7.2604 5.66668 6.50767 5.97669 5.88765 6.59672C5.26762 7.21675 4.95784 7.96923 4.95831 8.85418C4.95831 9.16112 4.99963 9.45626 5.08227 9.73959C5.16491 10.0229 5.28887 10.2945 5.45415 10.5542L5.17081 10.8375C5.04095 10.9674 4.97602 11.1327 4.97602 11.3333C4.97602 11.534 5.04095 11.6993 5.17081 11.8292C5.30067 11.959 5.46595 12.024 5.66665 12.024C5.86734 12.024 6.03262 11.959 6.16248 11.8292L6.44581 11.5458C6.70554 11.7111 6.97706 11.8351 7.2604 11.9177C7.54373 12.0004 7.83887 12.0417 8.14581 12.0417ZM8.14581 10.625C8.03956 10.625 7.93331 10.6132 7.82706 10.5896C7.72081 10.566 7.61456 10.5365 7.50831 10.5011L8.99581 8.99584C9.12567 8.86598 9.19061 8.70071 9.19061 8.50001C9.19061 8.29932 9.12567 8.13404 8.99581 8.00418C8.86595 7.87432 8.70067 7.80939 8.49998 7.80939C8.29929 7.80939 8.13401 7.87432 8.00415 8.00418L6.49894 9.49168C6.46352 9.38543 6.43401 9.27918 6.4104 9.17293C6.38679 9.06668 6.37498 8.96043 6.37498 8.85418C6.37498 8.35834 6.54616 7.93925 6.88852 7.59689C7.23088 7.25452 7.64998 7.08334 8.14581 7.08334H9.91665V8.85418C9.91665 9.35001 9.74547 9.76911 9.4031 10.1115C9.06074 10.4538 8.64165 10.625 8.14581 10.625ZM8.49998 16.2917L6.05623 14.3792L2.99269 14.0073L2.62081 10.9438L0.708313 8.50001L2.62081 6.05626L2.99269 2.99272L6.05623 2.62084L8.49998 0.708344L10.9437 2.62084L14.0073 2.99272L14.3791 6.05626L16.2916 8.50001L14.3791 10.9438L14.0073 14.0073L10.9437 14.3792L8.49998 16.2917ZM8.49998 14.4854L10.3771 13.0333L12.75 12.7323L13.0333 10.3771L14.4854 8.50001L13.0333 6.62293L12.7323 4.26772L10.3771 3.96668L8.49998 2.51459L6.6229 3.96668L4.24998 4.26772L3.96665 6.62293L2.51456 8.50001L3.96665 10.3771L4.26769 12.75L6.6229 13.0333L8.49998 14.4854Z" fill="white"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_34_317">
+            <rect width="17" height="17" fill="white"/>
+            </clipPath>
+            </defs>
+            </svg>
+            </Box>
+            <Box >
+            <Menu>
+                <MenuButton as={Button}  color={'white'} backgroundColor={'#181818'} border={'none'}>
+                    Energy
+                </MenuButton>
+                <MenuList backgroundColor={'#181818'}>
+                    <MenuItem backgroundColor={'#181818'} color={'white'} border={'none'} _hover={{borderBottom:'2px solid green'}}>Category1</MenuItem>
+                    <MenuItem backgroundColor={'#181818'} color={'white'} border={'none'} _hover={{borderBottom:'2px solid green'}}>Category2</MenuItem>
+                    <MenuItem backgroundColor={'#181818'} color={'white'} border={'none'} _hover={{borderBottom:'2px solid green'}}>Category3</MenuItem>
+                    <MenuItem backgroundColor={'#181818'} color={'white'} border={'none'} _hover={{borderBottom:'2px solid green'}}>Category4</MenuItem>
+                    <MenuItem backgroundColor={'#181818'} color={'white'} border={'none'} _hover={{borderBottom:'2px solid green'}}>Category5</MenuItem>
+                </MenuList>
+                </Menu>
+            </Box>
+            <Box>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 8L12 16L19 8H5Z" fill="white"/>
+                        </svg>
+            </Box>
+            </Box>
+            <Box padding={'13px 10px 13px 20px'} display={'flex'}><Box marginTop={'2px'} marginLeft={'5px'} >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M12 3.76999L11.25 4.60999C11.25 4.60999 9.97 6.05999 8.68 7.93999C7.39 9.81999 6 12.07 6 14.23C6 15.8213 6.63214 17.3474 7.75736 18.4726C8.88258 19.5978 10.4087 20.23 12 20.23C13.5913 20.23 15.1174 19.5978 16.2426 18.4726C17.3679 17.3474 18 15.8213 18 14.23C18 12.07 16.61 9.81999 15.32 7.93999C14.5243 6.78422 13.6664 5.67258 12.75 4.60999L12 3.76999ZM12 6.89999C12.44 7.41999 12.84 7.84999 13.68 9.06999C14.89 10.83 16 13.07 16 14.23C16 16.45 14.22 18.23 12 18.23C9.78 18.23 8 16.45 8 14.23C8 13.07 9.11 10.83 10.32 9.06999C11.16 7.84999 11.56 7.41999 12 6.89999Z" fill="white"/>
+</svg>
+            </Box>
+            <Box >
+            <Menu>
+                <MenuButton as={Button}  color={'white'} backgroundColor={'transparent'} border={'none'}>
+                Water and Effluents
+                </MenuButton>
+                
+                </Menu>
+            </Box>
+            <Box>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 8L12 16L19 8H5Z" fill="white"/>
+                        </svg>
+            </Box>
+            </Box>
+       </Box>
+
+       <Box padding={'10px 0 10px 0'} >
+        <Box padding={'13px 10px 13px 20px'} width={'max-content'} color={'#5C5C5C'} fontFamily={'Inter'} fontWeight={'500'} fontSize={'14px'} textAlign={'left'}>ANALYZE</Box>
+        <Box padding={'13px 10px 13px 20px'} display={'flex'}><Box marginTop={'5px'} marginLeft={'10px'} marginRight={'5px'}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+            <g clip-path="url(#clip0_34_317)">
+            <path d="M8.14581 12.0417C9.03123 12.0417 9.78395 11.7317 10.404 11.1116C11.024 10.4916 11.3338 9.73912 11.3333 8.85418V5.66668H8.14581C7.2604 5.66668 6.50767 5.97669 5.88765 6.59672C5.26762 7.21675 4.95784 7.96923 4.95831 8.85418C4.95831 9.16112 4.99963 9.45626 5.08227 9.73959C5.16491 10.0229 5.28887 10.2945 5.45415 10.5542L5.17081 10.8375C5.04095 10.9674 4.97602 11.1327 4.97602 11.3333C4.97602 11.534 5.04095 11.6993 5.17081 11.8292C5.30067 11.959 5.46595 12.024 5.66665 12.024C5.86734 12.024 6.03262 11.959 6.16248 11.8292L6.44581 11.5458C6.70554 11.7111 6.97706 11.8351 7.2604 11.9177C7.54373 12.0004 7.83887 12.0417 8.14581 12.0417ZM8.14581 10.625C8.03956 10.625 7.93331 10.6132 7.82706 10.5896C7.72081 10.566 7.61456 10.5365 7.50831 10.5011L8.99581 8.99584C9.12567 8.86598 9.19061 8.70071 9.19061 8.50001C9.19061 8.29932 9.12567 8.13404 8.99581 8.00418C8.86595 7.87432 8.70067 7.80939 8.49998 7.80939C8.29929 7.80939 8.13401 7.87432 8.00415 8.00418L6.49894 9.49168C6.46352 9.38543 6.43401 9.27918 6.4104 9.17293C6.38679 9.06668 6.37498 8.96043 6.37498 8.85418C6.37498 8.35834 6.54616 7.93925 6.88852 7.59689C7.23088 7.25452 7.64998 7.08334 8.14581 7.08334H9.91665V8.85418C9.91665 9.35001 9.74547 9.76911 9.4031 10.1115C9.06074 10.4538 8.64165 10.625 8.14581 10.625ZM8.49998 16.2917L6.05623 14.3792L2.99269 14.0073L2.62081 10.9438L0.708313 8.50001L2.62081 6.05626L2.99269 2.99272L6.05623 2.62084L8.49998 0.708344L10.9437 2.62084L14.0073 2.99272L14.3791 6.05626L16.2916 8.50001L14.3791 10.9438L14.0073 14.0073L10.9437 14.3792L8.49998 16.2917ZM8.49998 14.4854L10.3771 13.0333L12.75 12.7323L13.0333 10.3771L14.4854 8.50001L13.0333 6.62293L12.7323 4.26772L10.3771 3.96668L8.49998 2.51459L6.6229 3.96668L4.24998 4.26772L3.96665 6.62293L2.51456 8.50001L3.96665 10.3771L4.26769 12.75L6.6229 13.0333L8.49998 14.4854Z" fill="white"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_34_317">
+            <rect width="17" height="17" fill="white"/>
+            </clipPath>
+            </defs>
+            </svg>
+            </Box>
+            <Box >
+            <Menu>
+                <MenuButton as={Button}  color={'white'} backgroundColor={'transparent'} border={'none'}>
+                    Energy
+                </MenuButton>
+                
+                </Menu>
+            </Box>
+            <Box>
+            
+            </Box>
+            </Box>
+            <Box padding={'13px 10px 13px 20px'} display={'flex'}><Box marginTop={'2px'} marginLeft={'10px'}marginRight={'5px'} >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+<path d="M4.66634 2.66634V1.33301H11.333V2.66634H14.6663V3.99967H13.333V13.9997C13.333 14.1765 13.2628 14.3461 13.1377 14.4711C13.0127 14.5961 12.8432 14.6663 12.6663 14.6663H3.33301C3.1562 14.6663 2.98663 14.5961 2.8616 14.4711C2.73658 14.3461 2.66634 14.1765 2.66634 13.9997V3.99967H1.33301V2.66634H4.66634ZM3.99967 3.99967V13.333H11.9997V3.99967H3.99967ZM5.99967 5.99967H7.33301V11.333H5.99967V5.99967ZM8.66634 5.99967H9.99967V11.333H8.66634V5.99967Z" fill="white"/>
+</svg>
+            </Box>
+            <Box >
+            <Menu>
+                <MenuButton as={Button}  color={'white'} backgroundColor={'transparent'} border={'none'}>
+                Waste
+                </MenuButton>
+               
+                </Menu>
+            </Box>
+            <Box color={'rgba(2, 171, 108, 1)'}>
+            (βeta)
+            </Box>
+            </Box>
+       </Box>
+            <Box width={'max-content'} margin={'auto'} padding={'63.5px 0'}>
+                <Button border={'none'} borderRadius={'11px'} fontFamily={'Intra'} color={'white'} padding={'20px'} backgroundColor={'#02AB6C'} width={'187px'}>Open Help Centre</Button>
+            </Box>
+          </DrawerBody>
+
+          <DrawerFooter>
+           
+           
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+        </Box>
+        </>
+      ):(
+        <>
+        <Box width={'20%'} height={'1306px'} backgroundColor={'#181818'}>
      <Box padding={'13px 10px 13px 30px'} >
             <Image src={sideLogo}/>
        </Box>
@@ -379,6 +559,10 @@ const Home = () => {
                 <Button border={'none'} borderRadius={'11px'} fontFamily={'Intra'} color={'white'} padding={'20px'} backgroundColor={'#02AB6C'} width={'187px'}>Open Help Centre</Button>
             </Box>
      </Box>
+     
+        </>
+      )
+     }
        
       
 
@@ -417,7 +601,7 @@ const Home = () => {
                 </div>
                 
            </div>
-           <div className='home-div-div2-div2'>
+           <div className='home-div-div2-div2' onClick={sorter}>
                     <span>Show Timeline </span>  <span>: Jan’22 - Dec’23 |</span> 
                     
                     <span>
@@ -478,7 +662,7 @@ const Home = () => {
                 <div>Emission/Revenue</div>
                 
                 <div>
-                    <ApexChartChild data={data}/>
+                    <ApexChartChild data={info}/>
                 </div>
             </div>
            <div>
@@ -488,7 +672,7 @@ const Home = () => {
                         <div>Emission by Suppliers</div>
                         <div>
                             <div className='home-div-div2-div5-chart-headding-svg'>
-                                <div>
+                                <div onClick={legend}>
                                     <img src={zoom} alt="" />
                                 </div>
                                 <div>
@@ -498,7 +682,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div>
-                        <DonutChart data={data} />
+                        <DonutChart data={data} showLegend={showLegend} />
                     </div>
                 </div>
                 <div className='home-div-div2-div5-div2'>
@@ -522,7 +706,7 @@ const Home = () => {
                             <th>YOU R/E CHANGE</th>
                         </tr>
                        {
-                        data.map((e ,idx)=>(
+                        info.map((e ,idx)=>(
                             e.YOYRECHANGE!=null&& idx<18?(
                             <tr>
                                 <td>{e.Month}</td>
